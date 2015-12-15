@@ -55,6 +55,90 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: brakeman_scans; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE brakeman_scans (
+    id integer NOT NULL,
+    project_id integer NOT NULL,
+    commit_id integer,
+    sha character varying(255) NOT NULL,
+    brakeman_version character varying(255),
+    duration integer
+);
+
+
+--
+-- Name: brakeman_scans_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE brakeman_scans_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: brakeman_scans_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE brakeman_scans_id_seq OWNED BY brakeman_scans.id;
+
+
+--
+-- Name: brakeman_scans_warnings; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE brakeman_scans_warnings (
+    scan_id integer,
+    warning_id integer
+);
+
+
+--
+-- Name: brakeman_warnings; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE brakeman_warnings (
+    id integer NOT NULL,
+    project_id integer NOT NULL,
+    warning_type character varying(255) NOT NULL,
+    warning_code integer NOT NULL,
+    fingerprint character varying(255) NOT NULL,
+    message text NOT NULL,
+    file character varying(255) NOT NULL,
+    line integer,
+    url character varying(255) NOT NULL,
+    code text,
+    confidence character varying(255) NOT NULL,
+    props json DEFAULT '{}'::json NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: brakeman_warnings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE brakeman_warnings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: brakeman_warnings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE brakeman_warnings_id_seq OWNED BY brakeman_warnings.id;
+
+
+--
 -- Name: commits; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1113,6 +1197,20 @@ ALTER SEQUENCE versions_id_seq OWNED BY versions.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY brakeman_scans ALTER COLUMN id SET DEFAULT nextval('brakeman_scans_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY brakeman_warnings ALTER COLUMN id SET DEFAULT nextval('brakeman_warnings_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY commits ALTER COLUMN id SET DEFAULT nextval('commits_id_seq'::regclass);
 
 
@@ -1282,6 +1380,22 @@ ALTER TABLE ONLY value_statements ALTER COLUMN id SET DEFAULT nextval('value_sta
 --
 
 ALTER TABLE ONLY versions ALTER COLUMN id SET DEFAULT nextval('versions_id_seq'::regclass);
+
+
+--
+-- Name: brakeman_scans_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY brakeman_scans
+    ADD CONSTRAINT brakeman_scans_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: brakeman_warnings_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY brakeman_warnings
+    ADD CONSTRAINT brakeman_warnings_pkey PRIMARY KEY (id);
 
 
 --
@@ -1498,6 +1612,13 @@ ALTER TABLE ONLY value_statements
 
 ALTER TABLE ONLY versions
     ADD CONSTRAINT versions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_brakeman_warnings_on_fingerprint; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_brakeman_warnings_on_fingerprint ON brakeman_warnings USING btree (fingerprint);
 
 
 --
@@ -2297,4 +2418,10 @@ INSERT INTO schema_migrations (version) VALUES ('20151108221505');
 INSERT INTO schema_migrations (version) VALUES ('20151108223154');
 
 INSERT INTO schema_migrations (version) VALUES ('20151108233510');
+
+INSERT INTO schema_migrations (version) VALUES ('20151205222043');
+
+INSERT INTO schema_migrations (version) VALUES ('20151205223652');
+
+INSERT INTO schema_migrations (version) VALUES ('20151206004534');
 

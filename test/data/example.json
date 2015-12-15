@@ -1,0 +1,341 @@
+{
+  "scan_info":{
+    "app_path":"/Users/lailrc/Sites/houston-core",
+    "rails_version":"4.1.14",
+    "security_warnings":15,
+    "start_time":"2015-12-05 16:29:40 -0600",
+    "end_time":"2015-12-05 16:29:44 -0600",
+    "duration":3.796886,
+    "checks_performed":[
+      "BasicAuth",
+      "ContentTag",
+      "CreateWith",
+      "CrossSiteScripting",
+      "DefaultRoutes",
+      "Deserialize",
+      "DetailedExceptions",
+      "DigestDoS",
+      "EscapeFunction",
+      "Evaluation",
+      "Execute",
+      "FileAccess",
+      "FileDisclosure",
+      "FilterSkipping",
+      "ForgerySetting",
+      "HeaderDoS",
+      "I18nXSS",
+      "JRubyXML",
+      "JSONEncoding",
+      "JSONParsing",
+      "LinkTo",
+      "LinkToHref",
+      "MailTo",
+      "MassAssignment",
+      "ModelAttrAccessible",
+      "ModelAttributes",
+      "ModelSerialize",
+      "NestedAttributes",
+      "NumberToCurrency",
+      "QuoteTableName",
+      "Redirect",
+      "RegexDoS",
+      "Render",
+      "RenderDoS",
+      "RenderInline",
+      "ResponseSplitting",
+      "SQL",
+      "SQLCVEs",
+      "SSLVerify",
+      "SafeBufferManipulation",
+      "SanitizeMethods",
+      "SelectTag",
+      "SelectVulnerability",
+      "Send",
+      "SendFile",
+      "SessionManipulation",
+      "SessionSettings",
+      "SimpleFormat",
+      "SingleQuotes",
+      "SkipBeforeFilter",
+      "StripTags",
+      "SymbolDoSCVE",
+      "TranslateBug",
+      "UnsafeReflection",
+      "ValidationRegex",
+      "WithoutProtection",
+      "XMLDoS",
+      "YAMLParsing"
+    ],
+    "number_of_controllers":37,
+    "number_of_models":60,
+    "number_of_templates":89,
+    "ruby_version":"2.1.2",
+    "brakeman_version":"3.1.2"
+  },
+  "warnings":[
+    {
+      "warning_type":"Cross Site Scripting",
+      "warning_code":84,
+      "fingerprint":"1239bd868e508e7422286cf4999989cc38628eee3ea4f8b25796ba6fffdf535a",
+      "message":"Unescaped parameter value rendered inline",
+      "file":"app/controllers/project_hooks_controller.rb",
+      "line":14,
+      "link":"http://brakemanscanner.org/docs/warning_types/cross_site_scripting/",
+      "code":"render(text => \"A hook with the slug '#{params[:hook]}' is not defined\", { :status => 404 })",
+      "render_path":null,
+      "location":{
+        "type":"method",
+        "class":"ProjectHooksController",
+        "method":"trigger"
+      },
+      "user_input":"params[:hook]",
+      "confidence":"High"
+    },
+    {
+      "warning_type":"Cross Site Scripting",
+      "warning_code":84,
+      "fingerprint":"2f7a8a75df47dcb020c163e484bfb475702003e76e28c3f1193fad088ce33901",
+      "message":"Unescaped parameter value rendered inline",
+      "file":"app/controllers/hooks_controller.rb",
+      "line":34,
+      "link":"http://brakemanscanner.org/docs/warning_types/cross_site_scripting/",
+      "code":"render(text => \"A hook with the slug '#{params[:hook]}' is not defined\", { :status => 404 })",
+      "render_path":null,
+      "location":{
+        "type":"method",
+        "class":"HooksController",
+        "method":"trigger"
+      },
+      "user_input":"params[:hook]",
+      "confidence":"High"
+    },
+    {
+      "warning_type":"SQL Injection",
+      "warning_code":0,
+      "fingerprint":"4f74363f1c1412df51a46a80c3a76fb3e78ae52f97feed4bee41ae4b50137b61",
+      "message":"Possible SQL injection",
+      "file":"app/models/user.rb",
+      "line":69,
+      "link":"http://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code":"where(\"ARRAY[\\\"email_addresses\\\"] && ARRAY[#{email_addresses.flatten.compact.map do\n connection.quote(email.downcase)\n end.join(\",\")}]\")",
+      "render_path":null,
+      "location":{
+        "type":"method",
+        "class":"User",
+        "method":"User.with_email_address"
+      },
+      "user_input":"email_addresses.flatten.compact.map do\n connection.quote(email.downcase)\n end.join(\",\")",
+      "confidence":"Medium"
+    },
+    {
+      "warning_type":"SQL Injection",
+      "warning_code":0,
+      "fingerprint":"6d13019c5b9bf06f794ed21fd2d7fb7e02b1199030c3d8a93e7fcffd56ba5ebe",
+      "message":"Possible SQL injection",
+      "file":"app/controllers/project_pretickets_controller.rb",
+      "line":9,
+      "link":"http://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code":"Project.find_by_slug!(params[:slug]).tickets.where(\"antecedents && ARRAY[#{Project.find_by_slug!(params[:slug]).error_tracker.open_problems(:comments => true).sort_by(&:last_notice_at).reverse.map(&:err_ids).flatten.map do\n \"'Errbit:#{id}'\"\n end.join(\",\")}]\")",
+      "render_path":null,
+      "location":{
+        "type":"method",
+        "class":"ProjectPreticketsController",
+        "method":"show"
+      },
+      "user_input":"Project.find_by_slug!(params[:slug]).error_tracker",
+      "confidence":"High"
+    },
+    {
+      "warning_type":"Session Setting",
+      "warning_code":29,
+      "fingerprint":"715ad9c0d76f57a6a657192574d528b620176a80fec969e2f63c88eacab0b984",
+      "message":"Session secret should not be included in version control",
+      "file":"config/initializers/secret_token.rb",
+      "line":13,
+      "link":"http://brakemanscanner.org/docs/warning_types/session_setting/",
+      "code":null,
+      "render_path":null,
+      "location":null,
+      "user_input":null,
+      "confidence":"High"
+    },
+    {
+      "warning_type":"Cross Site Scripting",
+      "warning_code":4,
+      "fingerprint":"7d8fa790f17719ee2392d1acb851a8a1b18e4dfc9a07683a951c95088dea5dc6",
+      "message":"Unsafe model attribute in link_to href",
+      "file":"app/views/project_notification/test_run.html.erb",
+      "line":117,
+      "link":"http://brakemanscanner.org/docs/warning_types/link_to_href",
+      "code":"link_to((Project.find_by_slug!(params[:slug]).test_runs.find_by_sha(params[:commit]) or raise(ActiveRecord::RecordNotFound)).results_url, (Project.find_by_slug!(params[:slug]).test_runs.find_by_sha(params[:commit]) or raise(ActiveRecord::RecordNotFound)).results_url, :target => \"_blank\")",
+      "render_path":[{"type":"controller","class":"TestRunsController","method":"show","line":6,"file":"app/controllers/test_runs_controller.rb"}],
+      "location":{
+        "type":"template",
+        "template":"project_notification/test_run"
+      },
+      "user_input":"Project.find_by_slug!(params[:slug])",
+      "confidence":"Medium"
+    },
+    {
+      "warning_type":"Cross Site Scripting",
+      "warning_code":4,
+      "fingerprint":"94cba97dfc2db29a34eac5015d8c6c59c4b13eeab7daee1d1f10047a90654673",
+      "message":"Unsafe model attribute in link_to href",
+      "file":"app/views/project_notification/test_run.html.erb",
+      "line":6,
+      "link":"http://brakemanscanner.org/docs/warning_types/link_to_href",
+      "code":"link_to((if (Project.find_by_slug!(params[:slug]).test_runs.find_by_sha(params[:commit]) or raise(ActiveRecord::RecordNotFound)).pending? then\n  \"pending\"\nelse\n  (Project.find_by_slug!(params[:slug]).test_runs.find_by_sha(params[:commit]) or raise(ActiveRecord::RecordNotFound)).result\nend), (Project.find_by_slug!(params[:slug]).test_runs.find_by_sha(params[:commit]) or raise(ActiveRecord::RecordNotFound)).results_url, :target => \"_blank\")",
+      "render_path":[{"type":"controller","class":"TestRunsController","method":"show","line":6,"file":"app/controllers/test_runs_controller.rb"}],
+      "location":{
+        "type":"template",
+        "template":"project_notification/test_run"
+      },
+      "user_input":"Project.find_by_slug!(params[:slug])",
+      "confidence":"Medium"
+    },
+    {
+      "warning_type":"SQL Injection",
+      "warning_code":0,
+      "fingerprint":"9dad0587adb705cdab112b7d7d313cb9f6821a3e11fcc5cf2b751d42359c8d94",
+      "message":"Possible SQL injection",
+      "file":"app/controllers/reports_controller.rb",
+      "line":67,
+      "link":"http://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code":"Ticket.connection.select_rows(\"        SELECT\\n          months.month::date,\\n          AVG(extract('epoch' from q.closed_at - q.to_staging_at)) / 86400,\\n          AVG(extract('epoch' from q.released_at - q.closed_at)) / 86400\\n        FROM generate_series('#{start_date}'::timestamp, '#{end_date}'::timestamp, '1 month') AS months(month)\\n        LEFT OUTER JOIN (\\n          SELECT\\n            to_staging.created_at \\\"to_staging_at\\\",\\n            tickets.closed_at,\\n            to_production.created_at \\\"released_at\\\"\\n          FROM tickets\\n\\n          INNER JOIN (\\n            SELECT rt1.ticket_id, MIN(r1.created_at) \\\"created_at\\\"\\n            FROM releases r1\\n            INNER JOIN releases_tickets rt1 ON rt1.release_id=r1.id\\n            WHERE r1.environment_name = 'Staging'\\n            GROUP BY rt1.ticket_id\\n          ) AS to_staging ON to_staging.ticket_id=tickets.id\\n\\n          INNER JOIN (\\n            SELECT rt2.ticket_id, MIN(r2.created_at) \\\"created_at\\\"\\n            FROM releases r2\\n            INNER JOIN releases_tickets rt2 ON rt2.release_id=r2.id\\n            WHERE r2.environment_name = 'Production'\\n            GROUP BY rt2.ticket_id\\n          ) AS to_production ON to_production.ticket_id=tickets.id\\n\\n        ) AS q\\n          ON q.released_at >= months.month\\n          AND q.released_at < (months.month + interval '1 month')\\n        WHERE q.closed_at > q.to_staging_at\\n          AND q.released_at > q.closed_at\\n        GROUP BY months.month\\n        ORDER BY months.month ASC\\n\")",
+      "render_path":null,
+      "location":{
+        "type":"method",
+        "class":"ReportsController",
+        "method":"time_to_release"
+      },
+      "user_input":"start_date",
+      "confidence":"Medium"
+    },
+    {
+      "warning_type":"Cross Site Scripting",
+      "warning_code":2,
+      "fingerprint":"a1a2e2914ee616f38e909f6f00dbea465e56f456fd07ad7ec434664b7f813a82",
+      "message":"Unescaped model attribute",
+      "file":"app/views/project_tickets/_tickets.html.erb",
+      "line":24,
+      "link":"http://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code":"MultiJson.dump(Project.find_by_slug!(params[:slug]).tickets.bugs.map(&:as_json))",
+      "render_path":[{"type":"controller","class":"ProjectTicketsController","method":"bugs","line":39,"file":"app/controllers/project_tickets_controller.rb"},{"type":"template","name":"project_tickets/bugs","line":12,"file":"app/views/project_tickets/bugs.html.erb"}],
+      "location":{
+        "type":"template",
+        "template":"project_tickets/_tickets"
+      },
+      "user_input":"Project.find_by_slug!(params[:slug]).tickets",
+      "confidence":"Weak"
+    },
+    {
+      "warning_type":"Redirect",
+      "warning_code":18,
+      "fingerprint":"bc260d2020725bfa1ea16943e97e96fb8c30db58928d4b8b86a76b9652e7fa4a",
+      "message":"Possible unprotected redirect",
+      "file":"app/controllers/test_runs_controller.rb",
+      "line":22,
+      "link":"http://brakemanscanner.org/docs/warning_types/redirect/",
+      "code":"redirect_to((Project.find_by_slug!(params[:slug]).ci_server.last_build_progress_url or if Project.find_by_slug!(params[:slug]).ci_server.respond_to?(:last_build_url) then\n  Project.find_by_slug!(params[:slug]).ci_server.last_build_url\nend))",
+      "render_path":null,
+      "location":{
+        "type":"method",
+        "class":"TestRunsController",
+        "method":"retry"
+      },
+      "user_input":"Project.find_by_slug!(params[:slug]).ci_server.last_build_progress_url",
+      "confidence":"High"
+    },
+    {
+      "warning_type":"Cross Site Scripting",
+      "warning_code":84,
+      "fingerprint":"c35c4da011ce1f79acd3678bdf63fdff1313318242ce646515f8fce22b26d31d",
+      "message":"Unescaped parameter value rendered inline",
+      "file":"app/controllers/deploys_controller.rb",
+      "line":9,
+      "link":"http://brakemanscanner.org/docs/warning_types/cross_site_scripting/",
+      "code":"render(text => \"A project with the slug '#{params[:project_id]}' could not be found\", { :status => 404 })",
+      "render_path":null,
+      "location":{
+        "type":"method",
+        "class":"DeploysController",
+        "method":"create"
+      },
+      "user_input":"params[:project_id]",
+      "confidence":"High"
+    },
+    {
+      "warning_type":"Default Routes",
+      "warning_code":12,
+      "fingerprint":"c9a53cbe475bc524b180d2db4860eff3fc9d99471c682dbebb3a03c0ed9dfc21",
+      "message":"Any public method in TesterBarController can be used as an action for matched requests.",
+      "file":"config/routes.rb",
+      "line":null,
+      "link":"http://brakemanscanner.org/docs/warning_types/default_routes/",
+      "code":null,
+      "render_path":null,
+      "location":{
+        "type":"controller",
+        "controller":"TesterBarController"
+      },
+      "user_input":null,
+      "confidence":"Medium"
+    },
+    {
+      "warning_type":"SQL Injection",
+      "warning_code":0,
+      "fingerprint":"cbb9376072815af15d85e83d8d3409c81a3ee1b787ecbe2fd76238c18f5e32d0",
+      "message":"Possible SQL injection",
+      "file":"app/models/sprint_report.rb",
+      "line":29,
+      "link":"http://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code":"User.connection.select_rows(\"      SELECT\\n        sprints.end_date,\\n        SUM(completed.effort),\\n        SUM(checked_out.effort)\\n      FROM sprints\\n\\n      LEFT OUTER JOIN (\\n        SELECT\\n          sprints_tasks.sprint_id,\\n          SUM(tasks.effort) \\\"effort\\\"\\n        FROM sprints_tasks\\n        INNER JOIN tasks ON sprints_tasks.task_id=tasks.id\\n        INNER JOIN sprints ON sprints_tasks.sprint_id=sprints.id\\n        WHERE COALESCE(tasks.first_commit_at, tasks.completed_at) BETWEEN sprints.end_date - interval '6 days' AND sprints.end_date + interval '1 day'\\n        #{\"AND sprints_tasks.checked_out_by_id=#{user.id}\" if user}\\n        GROUP BY sprints_tasks.sprint_id\\n      ) AS completed\\n        ON completed.sprint_id=sprints.id\\n\\n      LEFT OUTER JOIN (\\n        SELECT\\n          sprints_tasks.sprint_id,\\n          SUM(tasks.effort) \\\"effort\\\"\\n        FROM sprints_tasks\\n        INNER JOIN tasks ON sprints_tasks.task_id=tasks.id\\n        #{\"WHERE sprints_tasks.checked_out_by_id=#{user.id}\" if user}\\n        GROUP BY sprints_tasks.sprint_id\\n      ) AS checked_out\\n        ON checked_out.sprint_id=sprints.id\\n\\n      WHERE sprints.end_date BETWEEN '#{start_date.strftime(\"%Y-%m-%d\")}' AND '#{end_date.strftime(\"%Y-%m-%d\")}'\\n      GROUP BY sprints.end_date\\n      ORDER BY sprints.end_date ASC\\n\")",
+      "render_path":null,
+      "location":{
+        "type":"method",
+        "class":"SprintReport",
+        "method":"to_a"
+      },
+      "user_input":"\"AND sprints_tasks.checked_out_by_id=#{user.id}\" if user",
+      "confidence":"Medium"
+    },
+    {
+      "warning_type":"SQL Injection",
+      "warning_code":0,
+      "fingerprint":"dd223eadcd1c21a35116bf00f15ad57c1dcf94add51a227fdb6eaea2f490cbce",
+      "message":"Possible SQL injection",
+      "file":"app/controllers/reports_controller.rb",
+      "line":113,
+      "link":"http://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code":"Ticket.connection.select_rows(\"        SELECT\\n          months.month::date,\\n          AVG(extract('epoch' from q.testing_started_at - q.to_staging_at)) / 3600\\n        FROM generate_series('#{start_date}'::timestamp, '#{end_date}'::timestamp, '1 month') AS months(month)\\n        LEFT OUTER JOIN (\\n          SELECT\\n            to_staging.created_at \\\"to_staging_at\\\",\\n            first_test.created_at \\\"testing_started_at\\\"\\n          FROM tickets\\n\\n          INNER JOIN (\\n            SELECT rt1.ticket_id, MIN(r1.created_at) \\\"created_at\\\"\\n            FROM releases r1\\n            INNER JOIN releases_tickets rt1 ON rt1.release_id=r1.id\\n            WHERE r1.environment_name = 'Staging'\\n            GROUP BY rt1.ticket_id\\n          ) AS to_staging ON to_staging.ticket_id=tickets.id\\n\\n          INNER JOIN (\\n            SELECT tn.ticket_id, MIN(tn.created_at) \\\"created_at\\\"\\n            FROM testing_notes tn\\n            GROUP BY tn.ticket_id\\n          ) AS first_test ON first_test.ticket_id=tickets.id\\n\\n        ) AS q\\n          ON q.to_staging_at >= months.month\\n          AND q.to_staging_at < (months.month + interval '1 month')\\n        WHERE q.testing_started_at > q.to_staging_at\\n        GROUP BY months.month\\n        ORDER BY months.month ASC\\n\")",
+      "render_path":null,
+      "location":{
+        "type":"method",
+        "class":"ReportsController",
+        "method":"time_to_first_test"
+      },
+      "user_input":"start_date",
+      "confidence":"Medium"
+    },
+    {
+      "warning_type":"Cross Site Scripting",
+      "warning_code":84,
+      "fingerprint":"eaffba5b103e603d2292c90b99e46847bbe04934b60f23d6cea2a6893d50c903",
+      "message":"Unescaped parameter value rendered inline",
+      "file":"app/controllers/project_hooks_controller.rb",
+      "line":8,
+      "link":"http://brakemanscanner.org/docs/warning_types/cross_site_scripting/",
+      "code":"render(text => \"A project with the slug '#{params[:project_id]}' could not be found\", { :status => 404 })",
+      "render_path":null,
+      "location":{
+        "type":"method",
+        "class":"ProjectHooksController",
+        "method":"trigger"
+      },
+      "user_input":"params[:project_id]",
+      "confidence":"High"
+    }
+  ],
+  "ignored_warnings":[],
+  "errors":[]
+}
