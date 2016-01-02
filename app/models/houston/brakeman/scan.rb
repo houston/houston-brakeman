@@ -23,6 +23,28 @@ module Houston
               .find_or_create_by(fingerprint: warning["fingerprint"])
           end
         end
+
+        Houston.observer.fire "brakeman:scan:complete", self
+      end
+
+      def state
+        warnings.any? ? "failure" : "success"
+      end
+
+      def context
+        "brakeman"
+      end
+
+      def url
+        "https://#{Houston.config.host}/brakeman/scans/#{project.slug}/#{sha}"
+      end
+
+      def description
+        if warnings.any?
+          "#{warnings.count} warnings"
+        else
+          "all clear!"
+        end
       end
 
     end

@@ -39,6 +39,11 @@ class ScanTest < ActiveSupport::TestCase
           scan.update_results! brakeman_example
         end
       end
+
+      should "publish results to GitHub" do
+        mock(test.repo).create_commit_status("example-sha", anything)
+        scan.update_results! brakeman_example
+      end
     end
   end
 
