@@ -1,10 +1,12 @@
 require "test_helper"
 
 class ScansControllerTest < ActionController::TestCase
+  include Devise::TestHelpers
 
   setup do
     @controller = Houston::Brakeman::ScansController.new
     @routes = Houston::Brakeman::Engine.routes
+    sign_in users(:admin)
   end
 
 

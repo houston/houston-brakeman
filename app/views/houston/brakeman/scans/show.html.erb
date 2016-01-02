@@ -1,0 +1,17 @@
+<h1 class="project-banner <%= @project.color %>" style="margin-bottom: 12px;">
+  <small>Brakeman Scan for</small> <%= @project.name %>
+</h1>
+
+<% @scan.warnings.group_by(&:warning_type).each do |type, warnings| %>
+<h3><%= type %> (<%= warnings.count %>)</h3>
+<ul>
+  <% warnings.each do |warning| %>
+    <li>
+      <%= link_to warning.message, warning.url %> • <%= link_to "#{warning.file}:#{warning.line}", "https://github.com/concordia-publishing-house/#{@project.slug}/blob/#{@scan.sha}/#{warning.file}#L#{warning.line}" %>
+      <% unless warning.code.blank? %>
+        <pre><code><%= warning.code %></code></pre>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
+<% end %>
