@@ -3,6 +3,7 @@ module Houston
     class ScansController < ApplicationController
       attr_reader :project
       before_filter :find_project
+      skip_before_filter :verify_authenticity_token, only: [:create]
 
       def show
         @scan = Scan.find_by!(project_id: project.id, sha: params[:sha])
