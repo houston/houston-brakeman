@@ -1,3 +1,7 @@
+Houston.observer.on "test_run:start" do |test_run|
+  test_run.commit.publish_commit_status! state: "pending", context: "brakeman"
+end
+
 Houston.config.on "brakeman:scan:complete" do |scan|
   begin
     repo = scan.project.repo
