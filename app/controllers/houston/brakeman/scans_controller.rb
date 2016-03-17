@@ -10,8 +10,10 @@ module Houston
       end
 
       def create
-        scan = Scan.find_or_create_by!(project: project, sha: params[:sha])
-        scan.update_results! request.raw_post
+        unless request.raw_post.blank?
+          scan = Scan.find_or_create_by!(project: project, sha: params[:sha])
+          scan.update_results! request.raw_post
+        end
         head :ok
       end
 
