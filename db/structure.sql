@@ -62,9 +62,10 @@ CREATE TABLE brakeman_scans (
     id integer NOT NULL,
     project_id integer NOT NULL,
     commit_id integer,
-    sha character varying(255) NOT NULL,
-    brakeman_version character varying(255),
-    duration integer
+    sha character varying NOT NULL,
+    brakeman_version character varying,
+    duration integer,
+    checks_performed character varying[]
 );
 
 
@@ -451,11 +452,11 @@ ALTER SEQUENCE project_quotas_id_seq OWNED BY project_quotas.id;
 
 CREATE TABLE projects (
     id integer NOT NULL,
-    name character varying(255),
-    slug character varying(255),
+    name character varying(255) NOT NULL,
+    slug character varying(255) NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    color character varying(255),
+    color character varying(255) DEFAULT 'default'::character varying NOT NULL,
     retired_at timestamp without time zone,
     category character varying(255),
     version_control_name character varying(255) DEFAULT 'None'::character varying NOT NULL,
@@ -470,7 +471,8 @@ CREATE TABLE projects (
     view_options hstore DEFAULT ''::hstore NOT NULL,
     gemnasium_slug character varying(255),
     feature_states hstore DEFAULT ''::hstore NOT NULL,
-    selected_features text[]
+    selected_features text[],
+    head_sha character varying
 );
 
 
@@ -513,7 +515,11 @@ CREATE TABLE pull_requests (
     old_labels text DEFAULT ''::text NOT NULL,
     labels text[] DEFAULT '{}'::text[],
     body text,
-    props jsonb DEFAULT '{}'::jsonb
+    props jsonb DEFAULT '{}'::jsonb,
+    avatar_url character varying,
+    json_labels jsonb DEFAULT '[]'::jsonb,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
 );
 
 
@@ -1755,6 +1761,13 @@ CREATE INDEX index_project_quotas_on_week ON project_quotas USING btree (week);
 
 
 --
+-- Name: index_projects_on_slug; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_projects_on_slug ON projects USING btree (slug);
+
+
+--
 -- Name: index_pull_requests_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2419,9 +2432,23 @@ INSERT INTO schema_migrations (version) VALUES ('20151108223154');
 
 INSERT INTO schema_migrations (version) VALUES ('20151108233510');
 
+INSERT INTO schema_migrations (version) VALUES ('20151201042126');
+
+INSERT INTO schema_migrations (version) VALUES ('20151202005557');
+
+INSERT INTO schema_migrations (version) VALUES ('20151202011812');
+
+INSERT INTO schema_migrations (version) VALUES ('20151205204922');
+
+INSERT INTO schema_migrations (version) VALUES ('20151205214647');
+
 INSERT INTO schema_migrations (version) VALUES ('20151205222043');
 
 INSERT INTO schema_migrations (version) VALUES ('20151205223652');
 
 INSERT INTO schema_migrations (version) VALUES ('20151206004534');
+
+INSERT INTO schema_migrations (version) VALUES ('20151209004458');
+
+INSERT INTO schema_migrations (version) VALUES ('20151209030113');
 
