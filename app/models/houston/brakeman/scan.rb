@@ -17,10 +17,9 @@ module Houston
             duration: (scan_info["duration"] * 1000).round,
             checks_performed: scan_info["checks_performed"])
 
+          warnings = Houston::Brakeman::Warning.where(project_id: project_id)
           self.warnings = results["warnings"].map do |warning|
-            Houston::Brakeman::Warning.where(project_id: project_id)
-              .create_with(warning)
-              .find_or_create_by(fingerprint: warning["fingerprint"])
+            warnings.find_or_create_for(warning)
           end
         end
 
