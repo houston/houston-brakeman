@@ -10,17 +10,18 @@ module Houston
       def update_results!(results)
         results = MultiJson.load(results) if results.is_a?(String)
 
+        project_warnings = Houston::Brakeman::Warning.where(project_id: project_id)
+        _warnings = results["warnings"].map do |warning|
+          project_warnings.find_or_create_for(warning)
+        end
+
         transaction do
           scan_info = results["scan_info"]
           update_attributes!(
             brakeman_version: scan_info["brakeman_version"],
             duration: (scan_info["duration"] * 1000).round,
             checks_performed: scan_info["checks_performed"])
-
-          warnings = Houston::Brakeman::Warning.where(project_id: project_id)
-          self.warnings = results["warnings"].map do |warning|
-            warnings.find_or_create_for(warning)
-          end
+          self.warnings = _warnings
         end
 
         Houston.observer.fire "brakeman:scan:complete", self
