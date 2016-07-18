@@ -12,4 +12,11 @@ module Houston
     end
 
   end
+
+
+
+  register_events {{
+    "brakeman:scan:complete" => params("scan").desc("A Brakeman scan has completed and the results are recorded")
+  }}
+
 end

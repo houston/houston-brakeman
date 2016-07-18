@@ -24,7 +24,7 @@ module Houston
           self.warnings = _warnings
         end
 
-        Houston.observer.fire "brakeman:scan:complete", self
+        Houston.observer.fire "brakeman:scan:complete", scan: self
       end
 
       def state
