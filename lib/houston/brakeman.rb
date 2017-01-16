@@ -5,6 +5,10 @@ module Houston
   module Brakeman
     extend self
 
+    def dependencies
+      [ :commits ]
+    end
+
     def config(&block)
       @configuration ||= Brakeman::Configuration.new
       @configuration.instance_eval(&block) if block_given?
