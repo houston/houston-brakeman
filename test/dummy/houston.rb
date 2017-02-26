@@ -10,6 +10,7 @@ Houston.config do
 
   # Give dummy values to these required fields.
   host "houston.test.com"
+  secret_key_base "da6c92b7020814241057ba432a887f"
   mailer_sender "houston@test.com"
 
   # Mount this module on the dummy Houston application.
