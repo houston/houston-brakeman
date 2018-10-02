@@ -20,6 +20,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "houston-core", ">= 0.7.0.beta4"
 
-  spec.add_development_dependency "bundler", "~> 1.11.2"
+  spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake", "~> 11.2"
 end
