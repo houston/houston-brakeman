@@ -5,7 +5,6 @@ class ReindexedBrakemanWarnings < ActiveRecord::Migration[5.0]
   end
 
   def down
-    remove_index :brakeman_warnings, [:project_id, :fingerprint]
-    remove_index :brakeman_warnings, :fingerprint, unique: true
+    raise ActiveRecord::IrreversibleMigration
   end
 end
