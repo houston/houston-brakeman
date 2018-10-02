@@ -36,7 +36,7 @@ module Houston
       end
 
       def url
-        "https://#{Houston.config.host}/brakeman/scans/#{project.slug}/#{sha}"
+        "#{Houston.root_url}/brakeman/scans/#{project.slug}/#{sha}"
       end
 
       def description
